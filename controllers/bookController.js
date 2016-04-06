@@ -29,7 +29,15 @@ var bookController = function(Book) {
         if (err) {
           res.status(500).send(err);
         } else {
-          res.json(books);
+          var returnBooks = [];
+          books.forEach(function(item, index, array) {
+            var newBook = item.toJSON();
+            newBook.links = {
+              self: 'http://' + req.headers.host + '/api/books/' + newBook._id
+            }
+            returnBooks.push(newBook);
+          });
+          res.json(returnBooks);
         }
       })
 
